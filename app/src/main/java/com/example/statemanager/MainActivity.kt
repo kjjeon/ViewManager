@@ -19,32 +19,23 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
         init()
+        initObserve()
     }
 
     private fun init() {
         binding.button1.setOnClickListener {
-            binding.image.setBackgroundColor(
-                Color.parseColor(
-                    (viewModel.requestInfo(MainViewModel.State.STATE_BLACK))
-                )
-            )
+            viewModel.requestInfo(MainViewModel.State.STATE_BLACK)
         }
         binding.button2.setOnClickListener {
-            binding.image.setBackgroundColor(
-                Color.parseColor(
-                    (viewModel.requestInfo(MainViewModel.State.STATE_RED))
-                )
-            )
             viewModel.requestInfo(MainViewModel.State.STATE_RED)
         }
-
         binding.button3.setOnClickListener {
-            binding.image.setBackgroundColor(
-                Color.parseColor(
-                    (viewModel.requestInfo(MainViewModel.State.STATE_BLUE))
-                )
-            )
             viewModel.requestInfo(MainViewModel.State.STATE_BLUE)
         }
+    }
+
+    private  fun initObserve() {
+        viewModel.stateLiveData
+            .observe(this, { binding.image.setBackgroundColor(Color.parseColor(it)) })
     }
 }
