@@ -25,25 +25,26 @@ class MainActivity : AppCompatActivity() {
         binding.button1.setOnClickListener {
             binding.image.setBackgroundColor(
                 Color.parseColor(
-                    (viewModel.requestInfo(MainViewModel.STATE_BLACK))
+                    (viewModel.requestInfo(MainViewModel.State.STATE_BLACK))
                 )
             )
         }
         binding.button2.setOnClickListener {
             binding.image.setBackgroundColor(
                 Color.parseColor(
-                    (viewModel.requestInfo(MainViewModel.STATE_RED))
+                    (viewModel.requestInfo(MainViewModel.State.STATE_RED))
                 )
             )
-            viewModel.requestInfo(MainViewModel.STATE_RED)
+            viewModel.requestInfo(MainViewModel.State.STATE_RED)
         }
+
         binding.button3.setOnClickListener {
             binding.image.setBackgroundColor(
                 Color.parseColor(
-                    (viewModel.requestInfo(MainViewModel.STATE_BLUE))
+                    (viewModel.requestInfo(MainViewModel.State.STATE_BLUE))
                 )
             )
-            viewModel.requestInfo(MainViewModel.STATE_BLUE)
+            viewModel.requestInfo(MainViewModel.State.STATE_BLUE)
         }
     }
 }

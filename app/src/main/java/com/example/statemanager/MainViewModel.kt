@@ -4,17 +4,13 @@ import androidx.lifecycle.ViewModel
 
 class MainViewModel : ViewModel() {
 
-    companion object {
-        const val STATE_BLACK = 1
-        const val STATE_RED = 2
-        const val STATE_BLUE = 3
+    enum class State {
+        STATE_BLACK, STATE_RED, STATE_BLUE
     }
 
-
-    fun requestInfo(state: Int): String = when (state) {
-            STATE_BLACK -> "#FF000000"
-            STATE_RED -> "#FFFF0000"
-            STATE_BLUE -> "#FF0000FF"
-            else -> throw IllegalStateException()
+    fun requestInfo(state: State): String = when (state) {
+        State.STATE_BLACK -> "#FF000000"
+        State.STATE_RED -> "#FFFF0000"
+        State.STATE_BLUE -> "#FF0000FF"
     }
 }
