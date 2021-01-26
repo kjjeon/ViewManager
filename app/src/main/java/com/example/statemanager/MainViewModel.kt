@@ -3,20 +3,35 @@ package com.example.statemanager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.statemanager.data.ItemType
+import com.example.statemanager.data.MainResult
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 
 class MainViewModel : ViewModel() {
 
-    private val _stateLiveData = MutableLiveData<String>()
-    val stateLiveData: LiveData<String>
+    private val compositeDisposable: CompositeDisposable by lazy { CompositeDisposable() }
+
+    private val repository by lazy { MainRepository() }
+    private val _stateLiveData = MutableLiveData<MainResult>()
+    val stateLiveData: LiveData<MainResult>
         get() = _stateLiveData
 
-    enum class State(val title: String, val colorId: String) {
-        STATE_BLACK("black","#FF000000"),
-        STATE_RED("red","#FFFF0000"),
-        STATE_BLUE("blue", "#FF0000FF")
+    fun requestInfo(itemType: ItemType) {
+        repository.query(itemType)
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { _stateLiveData.value = MainResult.InProgress }
+            .subscribe({
+                _stateLiveData.value = MainResult.Success(it)
+            }, {
+                _stateLiveData.value = MainResult.Error(it)
+            })
+            .addTo(compositeDisposable)
     }
 
-    fun requestInfo(state: State) {
-        _stateLiveData.value = state.colorId
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.clear()
     }
 }
